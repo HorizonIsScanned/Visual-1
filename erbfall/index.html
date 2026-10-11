@@ -112,6 +112,18 @@
   details[open] summary::after{content:"–"}
   details p{margin:10px 0 0;color:var(--muted);font-size:14px}
 
+  .consent{display:grid;gap:10px;margin:18px 0 0}
+  .ccard{display:flex;gap:12px;align-items:flex-start;border:2px solid var(--line);border-radius:var(--radius);background:#fff;padding:14px 16px;cursor:pointer;font-size:14px;line-height:1.45;transition:border-color .15s, background .15s}
+  .ccard:hover{border-color:#b9c6d4}
+  .ccard input{position:absolute;opacity:0;pointer-events:none}
+  .ccard .box{flex:0 0 22px;height:22px;border:2px solid #b9c6d4;border-radius:6px;background:#fff;display:grid;place-items:center;margin-top:1px;color:#fff;font-size:14px;font-weight:700}
+  .ccard input:checked + .box{background:var(--green);border-color:var(--green)}
+  .ccard input:checked + .box::after{content:"✓"}
+  .ccard:has(input:checked){border-color:var(--green);background:var(--green-soft)}
+  .ccard input:focus-visible + .box{outline:2px solid var(--navy);outline-offset:2px}
+  .ccard b{color:var(--navy)}
+  .ccard a{color:#2457a6}
+  .ccard .opt{display:inline-block;font-size:11px;color:var(--muted);background:var(--soft);border-radius:20px;padding:1px 8px;margin-left:4px}
   footer{text-align:center;padding:30px 0 40px;font-size:13px;color:var(--muted)}
   footer a{color:var(--muted);margin:0 10px}
   .legal{font-size:11px;color:var(--muted);margin-top:14px}
@@ -269,12 +281,21 @@
         <li>Ihre Daten werden nicht weitergegeben</li>
       </ul>
 
+      <div class="consent">
+        <label class="ccard"><input type="checkbox" id="c-daten"><span class="box"></span>
+          <span><b>Datenschutz</b><br>Ich stimme der Verarbeitung meiner Angaben zur Bearbeitung meiner Anfrage gemäß der <a href="#">Datenschutzerklärung</a> zu.</span></label>
+        <label class="ccard"><input type="checkbox" id="c-kontakt"><span class="box"></span>
+          <span><b>Kontaktaufnahme</b><br>Immobilienpunkt darf mich per Telefon oder E-Mail zu meiner Anfrage kontaktieren.</span></label>
+        <label class="ccard"><input type="checkbox" id="c-check"><span class="box"></span>
+          <span><b>Erbfall-Checkliste</b><span class="opt">optional</span><br>Schicken Sie mir zusätzlich die Checkliste und gelegentliche Tipps per E-Mail. Jederzeit abbestellbar.</span></label>
+      </div>
+
       <svg class="cta-hint" viewBox="0 0 60 46" fill="none" stroke="#3f9b5a" stroke-width="2.5" stroke-linecap="round"><path d="M5 4c30-4 48 12 45 38"/><path d="M42 34l8 8 6-10"/></svg>
       <div class="btnrow" style="margin-top:4px">
         <button class="back" data-back aria-label="Zurück">←</button>
         <button class="btn" id="submit" disabled>Einschätzung anfordern <span>→</span></button>
       </div>
-      <p class="legal">Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Angaben zur Bearbeitung Ihrer Anfrage gemäß unserer <a href="#">Datenschutzerklärung</a> zu.</p>
+      <p class="legal" id="consent-hint">Bitte bestätigen Sie Datenschutz und Kontaktaufnahme, um fortzufahren.</p>
     </section>
 
     <!-- 7 · Danke -->
@@ -371,10 +392,12 @@
 
   // Kontakt validieren
   const vc = () => {
-    $('submit').disabled = !($('name').value.trim().length > 1 &&
+    const consent = $('c-daten').checked && $('c-kontakt').checked;
+    $('consent-hint').hidden = consent;
+    $('submit').disabled = !(consent && $('name').value.trim().length > 1 &&
       ($('tel').value.replace(/\D/g, '').length >= 6 || /\S+@\S+\.\S+/.test($('mail').value)));
   };
-  ['name', 'tel', 'mail'].forEach(id => $(id).addEventListener('input', vc));
+  ['name', 'tel', 'mail', 'c-daten', 'c-kontakt'].forEach(id => $(id).addEventListener(id.startsWith('c-') ? 'change' : 'input', vc));
   $('submit').addEventListener('click', () => show(7));
 
   const fmt = d => d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
