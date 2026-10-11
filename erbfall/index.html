@@ -29,10 +29,10 @@
   html,body{margin:0}
   body{font-family:Poppins,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--text);background:var(--bg);line-height:1.5;-webkit-font-smoothing:antialiased}
   .wrap{max-width:560px;margin:0 auto;padding:0 16px}
-  header{padding:18px 0 10px;text-align:center}
-  .logo{font-weight:700;font-size:26px;color:var(--navy);letter-spacing:-.5px}
+  header{padding:14px 0 4px;text-align:center}
+  .logo{font-weight:700;font-size:22px;color:var(--navy);letter-spacing:-.5px}
   .logo span{color:var(--accent)}
-  .progress{height:5px;background:var(--line);border-radius:5px;overflow:hidden;margin:14px 0 4px}
+  .progress{height:4px;background:var(--line);border-radius:4px;overflow:hidden;margin:12px 0 2px}
   .progress i{display:block;height:100%;width:0;background:var(--green);transition:width .35s ease}
   .stepinfo{font-size:12px;color:var(--muted);text-align:right;min-height:18px}
 
@@ -40,24 +40,24 @@
   .step.active{display:block}
   @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
-  h1,h2{color:var(--navy);text-align:center;line-height:1.25;margin:22px 0 10px}
-  h1{font-size:26px}
+  h1,h2{color:var(--navy);text-align:center;line-height:1.25;margin:20px 0 10px}
+  h1{font-size:24px;margin:24px 0 16px}
   h2{font-size:22px}
   .sub{text-align:center;color:var(--muted);margin:0 0 22px}
 
-  .info{display:flex;gap:14px;align-items:flex-start;background:var(--soft);border-radius:var(--radius);padding:18px;margin:18px 0}
-  .info .ico{flex:0 0 40px;height:40px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:700;font-size:20px}
+  .info{display:flex;gap:12px;align-items:flex-start;background:var(--soft);border-radius:var(--radius);padding:14px 16px;margin:16px 0;font-size:15px}
+  .info .ico{flex:0 0 32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:700;font-size:16px}
   .info p{margin:0}
   .info b{color:var(--navy)}
 
-  table.cmp{width:100%;border-collapse:collapse;margin:22px 0;font-size:14px}
-  .cmp th,.cmp td{padding:12px 8px;border-bottom:1px solid var(--line);text-align:center;vertical-align:middle}
+  table.cmp{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:14px}
+  .cmp th,.cmp td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:center;vertical-align:middle}
   .cmp td:first-child,.cmp th:first-child{text-align:left;font-weight:500;color:var(--navy)}
   .cmp .with{background:var(--green-soft);color:#2a6e3f;font-weight:600}
   .cmp .without{background:var(--soft);color:var(--muted)}
   .cmp th.with,.cmp th.without{font-size:13px}
 
-  .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:0;border-radius:12px;background:var(--accent);color:var(--navy);font:600 17px/1.2 Poppins,system-ui,sans-serif;padding:20px;cursor:pointer;transition:background .15s, transform .05s}
+  .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:0;border-radius:12px;background:var(--accent);color:var(--navy);font:600 17px/1.2 Poppins,system-ui,sans-serif;padding:18px;cursor:pointer;transition:background .15s, transform .05s}
   .btn:hover{background:var(--accent-hover)}
   .btn:active{transform:scale(.99)}
   .btn:disabled{opacity:.45;cursor:not-allowed}
@@ -149,11 +149,7 @@
         </tbody>
       </table>
 
-      <svg class="cta-hint" viewBox="0 0 60 46" fill="none" stroke="#3f9b5a" stroke-width="2.5" stroke-linecap="round"><path d="M5 4c30-4 48 12 45 38"/><path d="M42 34l8 8 6-10"/></svg>
-      <button class="btn" data-next>Jetzt kostenlos starten <span>→</span></button>
-      <ul class="checks" style="justify-content:center">
-        <li>Keine Verkaufspflicht – auch wenn Sie behalten möchten</li>
-      </ul>
+      <button class="btn" data-next>Weiter</button>
     </section>
 
     <!-- 1 · Art -->
@@ -300,7 +296,7 @@
     </section>
   </main>
 
-  <!-- Vertrauen & FAQ (unter dem Funnel, auf allen Schritten außer Danke) -->
+  <!-- Vertrauen & FAQ (unter dem Funnel, nicht auf Einstieg und Danke) -->
   <div id="below">
     <div class="trust">
       <div class="seal"><span><b>4,9 ★</b>Google-Bewertungen</span></div>
@@ -344,7 +340,7 @@
     const pct = Math.round((Math.min(cur, LAST_INPUT) / LAST_INPUT) * 100);
     $('bar').style.width = (cur === 7 ? 100 : pct) + '%';
     $('stepinfo').textContent = cur > 0 && cur <= LAST_INPUT ? `Schritt ${cur} von ${LAST_INPUT}` : '';
-    $('below').style.display = cur === 7 ? 'none' : '';
+    $('below').style.display = cur === 0 || cur === 7 ? 'none' : '';  // Einstieg bewusst minimal
     if (cur === 6) renderSummary();
     if (cur === 7) renderThanks();
     window.scrollTo({ top: 0, behavior: 'smooth' });
